@@ -1,7 +1,10 @@
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
+const implementation = require('./implementation');
 
+require('dotenv').config()
+require('./database');
     const packageDefinition = protoLoader.loadSync(
         path.resolve(__dirname, 'pb', 'messages.proto'),
         {
@@ -14,5 +17,8 @@ const path = require('path');
     );
 
     const proto = grpc.loadPackageDefinition(packageDefinition);
+    const server = new grpc.Server();
 
-    console.log(proto);
+    server.addService(proto.UserService.service, implementation);
+    server.bind('0.0.0.0:3334', grpc.ServerCredentials.createInsecure());
+    server.start();

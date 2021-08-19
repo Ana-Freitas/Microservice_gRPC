@@ -8,9 +8,13 @@
     },
     "dependencies": {
         "@grpc/proto-loader": "^0.6.4",
-        "grpc": "^1.24.11"
+        "bcryptjs": "^2.4.3",
+        "dotenv": "^10.0.0",
+        "grpc": "^1.24.11",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.13.7"
     },
     "devDependencies": {
         "nodemon": "^2.0.12"
-      }
+    }
 }
