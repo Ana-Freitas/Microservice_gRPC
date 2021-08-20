@@ -1,4 +1,4 @@
-const User = require('./models/user');
+const User = require('./models/User');
 
 module.exports = {
 
@@ -10,6 +10,7 @@ module.exports = {
     },
 
     async registerUser(call, callback){
+
         const { email, username, password} = call.request;
         const user = await User.create({ email, username, password });
         
@@ -17,18 +18,24 @@ module.exports = {
     },
 
     async loginUser(call, callback){
-        const { email, password } = call.request;
+        
+        console.log('Request' + JSON.stringify(call.request));
+
+        const { email, username, password } = call.request.user;
+
+
+        console.log({ email, username, password } );
         const user = await User.findOne( { email })
 
-        if(!user){
-            return callback( { error: 'User not found' } )
-        }
+        console.log('Uusiario' + user);
+        // if(!user){
+        //     return callback( { error: 'User not found' } )
+        // }
 
-        if(!await user.compareHash(password)) {
-            return callback( { error: 'Invalid password' } )
-        }
+        // if(!await user.compareHash(password)) {
+        //     return callback( { error: 'Invalid password' } )
+        // }
 
-        return callback(null, { token: User.generateToken(user) } )
+        return callback(null, { token: 'teste' } )
     }
-
 }

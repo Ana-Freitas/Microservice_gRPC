@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth');
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     id: Number,
     email: String,
     username: String,
@@ -11,19 +11,19 @@ const userSchema = new mongoose.Schema({
 });
 
 
-userSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function(next) {
     if(!this.isModified('password')) next();
     
     this.password = await bcrypt.hash(this.password,8);
 });
 
-userSchema.methods = {
+UserSchema.methods = {
     compareHash(hash) {
         return bcrypt.compare(hash, this.password);
     },
 };
 
-userSchema.statics = {
+UserSchema.statics = {
     generateToken( { id } ){
         return jwt.sign( { id }, authConfig.secret, {
             expiresIn: authConfig.expireIn,
@@ -31,4 +31,4 @@ userSchema.statics = {
     }
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', UserSchema);

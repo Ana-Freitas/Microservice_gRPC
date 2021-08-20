@@ -1,10 +1,15 @@
+require('dotenv').config();
+
+const path = require('path');
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
-const path = require('path');
+
 const implementation = require('./implementation');
 
-require('dotenv').config()
+
 require('./database');
+
+
     const packageDefinition = protoLoader.loadSync(
         path.resolve(__dirname, 'pb', 'messages.proto'),
         {
