@@ -16,8 +16,8 @@ module.exports = {
     },
 
     async purchase (call, callback) {
-        const { title, value, userId } = call.request;
-        const purchase = await Purchase.create({ title, value, userId })
+        const { title, value, userId } = call.request.purchase;
+        const purchase = await Purchase.create({ userId, title, value  })
         return callback(null, { purchase: { ...purchase.toObject(), id: purchase._id }});
     }
 }

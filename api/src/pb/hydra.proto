@@ -27,6 +27,7 @@ message LoginUserResponse {
 
 message UserResponse {
     User user = 1;
+    string error = 2;
 }
 
 message AuthenticationRequest {

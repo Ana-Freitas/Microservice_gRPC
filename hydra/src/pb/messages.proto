@@ -27,11 +27,13 @@ message LoginUserResponse {
 
 message UserResponse {
     User user = 1;
+    string error = 2;
 }
 
 message AuthenticationRequest {
     string token = 1;
 }
+
 service UserService {
     rpc getUserById(GetUserByIdRequest) returns (UserResponse);
     rpc registerUser (RegisterUserRequest) returns (UserResponse);

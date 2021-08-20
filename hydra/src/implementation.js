@@ -16,7 +16,6 @@ module.exports = {
         const { email, username, password} = call.request;
         const user = await User.create({ email, username, password });
 
-        console.log(JSON.stringify(user));
         return callback(null, { user: { ...user.toObject(), id: user._id } });
     },
 
@@ -38,12 +37,13 @@ module.exports = {
 
     async authenticate(call, callback){
         const { token: fulltoken } = call.request;
-
+        
         if(!fulltoken){
-            callback(null, { error: 'No token provided'});
+            return callback(null, { error: 'No token provided'});
         }
 
-        const parts = fulltoken.split(" ");
+
+        const parts = fulltoken.split(" ");       
 
         if(!parts.length == 2){
             return callback(null, { error: 'Token error'});
@@ -56,11 +56,12 @@ module.exports = {
         }
 
         try {
-            const decoded = await promisify(jwt.verify)(token, authConfig.secret);
+            const decoded = await promisify(jwt.verify)(token, 'microservice-gRPC');
             const user = await User.findById(decoded.id);
             return callback(null, { user: { ...user.toObject(), id: user._id }});
+
         }catch(err) {
-            callback(null, {error: 'Token invalid'});
+           return callback(null, {error: 'Token invalid'});
         }
     }
 }

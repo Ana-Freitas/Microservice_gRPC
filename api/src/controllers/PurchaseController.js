@@ -33,10 +33,10 @@ class PurchaseController {
 
     async store(req, res) {
         const { userId } = req; 
-        const { title, value } = req.params;
+        const { title, value } = req.body;
 
         const response = await new Promise((resolve, reject) => {
-            NixService.listPurchase({ title, value, userId }, function (err, response) {
+            NixService.purchase({ purchase: { title, value, userId } }, function (err, response) {
                 if(err){
                     reject(err);
                 }else{
