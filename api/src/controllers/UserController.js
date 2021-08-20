@@ -9,19 +9,21 @@ class UserController {
 
     async store(req, res){
 
-        console.log(req.body);
-        const { email, username, password } = req.body;
 
+        const { email, username, password } = req.body;
         const user =   { email, username, password }
 
-        HydraService.registerUser(user, function (err, response) {
-            if(err){
-                console.log(err);
-            }else{
-                console.log(response);
-            }
+        const response = await new Promise((resolve, reject) => {
+            HydraService.registerUser(user, function (err, response) {
+                if(err){
+                    reject(err);
+                }else{
+                    resolve(response);
+                }
+            })
         })
-        return res.send('Uhuuu');
+
+        return res.json(response);
     }
 }
 

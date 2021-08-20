@@ -8,15 +8,21 @@ class SessionController {
         const user =  { user: { email, username, password } };
 
         console.log({ email, username, password })
-       HydraService.loginUser(user,  (err, response) => {
-           if(response){
-               console.log(response);
-           }else{
-            console.log(err);
-           }
-       })
+
+        const response = new Promise((resolve, reject) => {
+            HydraService.loginUser(user,  (err, response) => {
+                if(response){
+                    resolve(response);
+                    console.log(response);
+                }else{
+                    reject(err);
+                 console.log(err);
+                }
+            })
+        })
+
        //});
-         return res.json("Error");
+         return res.json(response);
     }
 }
 module.exports = new SessionController();
