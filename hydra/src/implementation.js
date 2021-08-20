@@ -28,14 +28,14 @@ module.exports = {
         const user = await User.findOne( { email })
 
         console.log('Uusiario' + user);
-        // if(!user){
-        //     return callback( { error: 'User not found' } )
-        // }
+        if(!user){
+            return callback(null, { token: 'User not found' } )
+        }
 
-        // if(!await user.compareHash(password)) {
-        //     return callback( { error: 'Invalid password' } )
-        // }
+        if(!await user.compareHash(password)) {
+            return callback(null, { token: 'Invalid password' } )
+        }
 
-        return callback(null, { token: 'teste' } )
+        return callback(null, { token: User.generateToken(user) } )
     }
 }
