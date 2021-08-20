@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 message User {
-    int32 id = 1;
+    string id = 1;
     string email = 2;
     string username = 3;
     string password = 4;
 }
 
 message GetUserByIdRequest {
-    int32 id = 1;
+    string id = 1;
 }
 
 message RegisterUserRequest {

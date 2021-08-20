@@ -6,34 +6,29 @@ module.exports = {
         const { id } = call.request; 
         const user = await User.findById(id);
 
-        return callback(null, { user });
+        return callback(null, { user: { ...user.toObject(), id: user._id, password: null } });
     },
 
     async registerUser(call, callback){
 
         const { email, username, password} = call.request;
         const user = await User.create({ email, username, password });
-        
-        return callback(null, { user });
+
+        console.log(JSON.stringify(user));
+        return callback(null, { user: { ...user.toObject(), id: user._id } });
     },
 
     async loginUser(call, callback){
-        
-        console.log('Request' + JSON.stringify(call.request));
+        const { email, password } = call.request.user;
 
-        const { email, username, password } = call.request.user;
-
-
-        console.log({ email, username, password } );
         const user = await User.findOne( { email })
 
-        console.log('Uusiario' + user);
         if(!user){
-            return callback(null, { token: 'User not found' } )
+            return callback(null, { error: 'User not found' } )
         }
 
         if(!await user.compareHash(password)) {
-            return callback(null, { token: 'Invalid password' } )
+            return callback(null, { error: 'Invalid password' } )
         }
 
         return callback(null, { token: User.generateToken(user) } )
